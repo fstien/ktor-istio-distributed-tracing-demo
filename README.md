@@ -37,7 +37,11 @@ This demo assumes that you have the following installed on your local machine.
 6. Send some traffic to the `earthquake-stats` pod. 
         
         curl localhost:30101/earthquake/latest
-
+        {
+        "location" : "80 km NNE of Hihifo, Tonga",
+        "magnitude" : 5.9,
+        "timeGMT" : "2020-11-07 09:27:04"
+        }
 7. Open the Jaeger UI to view traces.
         
         istioctl dashboard jaeger
