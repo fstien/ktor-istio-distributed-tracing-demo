@@ -1,7 +1,6 @@
 package com.github.fstien
 
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.github.fstien.ktor.header.forwarding.HeaderForwardingServer
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
