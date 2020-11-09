@@ -14,6 +14,8 @@ class EarthquakeClient {
         install(JsonFeature) {
             serializer = JacksonSerializer {}
         }
+
+        install(HeaderForwardingClient)
     }
 
     private suspend fun getEarthquakes(): List<Earthquake> {
