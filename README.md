@@ -1,6 +1,6 @@
-# Earthquake API - Distributed tracing demo using Istio and ktor-header-forwarding
+# Earthquake API - Distributed tracing demo with Istio and ktor-header-forwarding
 
-Demo application consisting of two Ktor microservices instrumented with [ktor-header-forwarding](https://github.com/fstien/ktor-header-forwarding), illustrating the use of distributed tracing with [Istio](https://istio.io/) in a local [Kubernetes cluster](https://www.docker.com/products/docker-desktop).
+Demo application consisting of two Ktor microservices instrumented with [ktor-header-forwarding](https://github.com/fstien/ktor-header-forwarding), illustrating the use of distributed tracing features of [Istio](https://istio.io/latest/docs/tasks/observability/distributed-tracing/overview/) in a local Kubernetes cluster.
 
 * EarthquakeAdaptor retrieves data about earthquakes that happened today using an [API from the U.S. Geological Survey](https://earthquake.usgs.gov/fdsnws/event/1/).
 * EarthquakeStats calls EarthquakeStats and exposes statistics about today's earthquakes such as `GET /earthquakes/latest` or `GET /earthquakes/biggest`. 
@@ -30,7 +30,7 @@ This demo assumes that you have the following installed on your local machine.
         kubectl apply -f k8s/earthquake-adaptor.yaml
         kubectl apply -f k8s/earthquake-stats.yaml
 
-5. Check that both pods are ready. 
+5. Check that both pods are running. 
         
         kubectl get po
 
@@ -42,15 +42,15 @@ This demo assumes that you have the following installed on your local machine.
         
         istioctl dashboard jaeger
 
-
+![image](./jaegerscreenshot.png)
 
 ## Steps 
 
-1. Import [ktor-header-forwarding](https://github.com/fstien/ktor-header-forwarding) in the `build.gradle` of the `earthquake-stats` application.
+1. Import [ktor-header-forwarding](https://github.com/fstien/ktor-header-forwarding) in the `build.gradle` of the `earthquake-stats` application. [Commit](https://github.com/fstien/ktor-istio-distributed-tracing-demo/commit/cef896a43e88f6cf0248252df20483b2e839526a).
 
         implementation "com.github.fstien:ktor-header-forwarding:0.1.0"
 
-2. Install the `HeaderForwardingServer` Ktor feature onto the application call pipeline, configured to forward requests as described in the [Istio distributed tracing documentation](https://istio.io/latest/docs/tasks/observability/distributed-tracing/overview/). 
+2. Install the `HeaderForwardingServer` Ktor feature onto the application call pipeline, configured to forward requests as described in the [Istio distributed tracing documentation](https://istio.io/latest/docs/tasks/observability/distributed-tracing/overview/). [Commit](https://github.com/fstien/ktor-istio-distributed-tracing-demo/commit/bd155f452bc8aca48dbb5e466b3904c40e68a217).
 
         install(HeaderForwardingServer) {
            header("x-request-id")
@@ -58,7 +58,7 @@ This demo assumes that you have the following installed on your local machine.
            filter { header -> header.startsWith("x-b3-") }
         }
 
-3. Install the `HeaderForwardingClient` Ktor feature onto the http client. 
+3. Install the `HeaderForwardingClient` Ktor feature onto the http client. [Commit](https://github.com/fstien/ktor-istio-distributed-tracing-demo/commit/0e647fafc3273ff4a933461fcdb2f0375a537456).
 
         install(HeaderForwardingClient)
 
