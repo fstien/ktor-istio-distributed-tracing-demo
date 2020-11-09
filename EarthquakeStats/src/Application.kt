@@ -1,6 +1,7 @@
 package com.github.fstien
 
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.github.fstien.ktor.header.forwarding.HeaderForwardingServer
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
@@ -17,6 +18,12 @@ fun Application.module(testing: Boolean = false) {
         jackson {
             enable(SerializationFeature.INDENT_OUTPUT)
         }
+    }
+
+    install(HeaderForwardingServer) {
+        header("x-request-id")
+        header("x-ot-span-context")
+        filter { header -> header.startsWith("x-b3-") }
     }
 
     val earthquakeClient = EarthquakeClient()
