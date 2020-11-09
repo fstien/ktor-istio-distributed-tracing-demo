@@ -33,6 +33,9 @@ This demo assumes that you have the following installed on your local machine.
 5. Check that both pods are running. 
         
         kubectl get po
+        NAME                                  READY   STATUS    RESTARTS   AGE
+        earthquake-adaptor-7b69f76849-cxzpc   2/2     Running   0          25s
+        earthquake-stats-8677997cf-jzwbk      2/2     Running   0          20s
 
 6. Send some traffic to the `earthquake-stats` pod. 
         
