@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: earthquake-stats
+spec:
+  selector:
+    matchLabels:
+      app: earthquake-stats
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: earthquake-stats
+    spec:
+      containers:
+      - name: earthquake-stats
+        image: earthquake-stats:latest
+        imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: earthquake-stats
+spec:
+  selector:
+    app: earthquake-stats
+  ports:
+    - port: 8080
+      nodePort: 30101
+  type: NodePort

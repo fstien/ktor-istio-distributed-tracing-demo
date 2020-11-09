@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: earthquake-adaptor
+spec:
+  selector:
+    matchLabels:
+      app: earthquake-adaptor
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: earthquake-adaptor
+    spec:
+      containers:
+      - name: earthquake-adaptor
+        image: earthquake-adaptor:latest
+        imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: earthquake-adaptor
+spec:
+  selector:
+    app: earthquake-adaptor
+  ports:
+    - port: 8080
+      nodePort: 30100
+  type: NodePort
